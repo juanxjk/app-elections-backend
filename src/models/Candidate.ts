@@ -1,4 +1,6 @@
-class Candidate {
+import Election from "./Election";
+
+export default class Candidate {
   public id?: number;
   public name!: string;
   public election!: Election;

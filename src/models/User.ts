@@ -1,16 +1,16 @@
-enum UserRole {
+export enum UserRole {
   Admin = "admin",
   Surveyor = "surveyor",
   Guest = "guest"
 }
 
-enum UserStatus {
+export enum UserStatus {
   Online = "online",
   Surveying = "surveying",
   Offline = "offline"
 }
 
-class User {
+export default class User {
   public id?: number;
   public fullName!: string;
   public username!: string;

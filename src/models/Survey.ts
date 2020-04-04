@@ -1,10 +1,14 @@
-enum ApprovalType {
+import User from "./User";
+import Candidate from "./Candidate";
+import ElectionPoll from "./ElectionPoll";
+
+export enum ApprovalType {
   Good = "good",
   Normal = "normal",
   Bad = "bad"
 }
 
-class Survey {
+export default class Survey {
   public id?: number;
   public approvalType!: ApprovalType;
   public favoritedCandidate!: Candidate;
