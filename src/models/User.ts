@@ -20,6 +20,7 @@ export default class User {
   }
   private passwordHash!: string;
   public email!: string;
+  public isVerified!: boolean;
   public role!: UserRole;
   public status!: UserStatus;
   public avatarURL?: string;
