@@ -1,5 +1,13 @@
 import bcrypt from "bcrypt";
-import { Entity, Column, PrimaryGeneratedColumn, ObjectID } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ObjectID,
+  DeleteDateColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from "typeorm";
 
 export enum UserRole {
   Admin = "admin",
@@ -59,4 +67,13 @@ export default class User {
   public checkPassword(password: string): boolean {
     return bcrypt.compareSync(password, this.passwordHash);
   }
+
+  @CreateDateColumn()
+  public createdAt!: Date;
+
+  @UpdateDateColumn()
+  public updatedAt?: Date;
+
+  @DeleteDateColumn()
+  public deletedAt?: Date;
 }
