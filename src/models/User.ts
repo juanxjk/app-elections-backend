@@ -24,7 +24,7 @@ export enum UserStatus {
 @Entity({ name: "users" })
 export default class User {
   @PrimaryGeneratedColumn("uuid")
-  public id?: string;
+  public id!: string;
 
   @Column()
   public fullName!: string;
