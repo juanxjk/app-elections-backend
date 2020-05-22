@@ -1,8 +1,8 @@
-import GenericError from "./GenericError";
+import BadRequestError from "./BadRequestError";
 
-class ValidationError extends GenericError {
+class ValidationError extends BadRequestError {
   constructor(message?: string) {
-    super(message, 400);
+    super(message);
   }
 }
 
