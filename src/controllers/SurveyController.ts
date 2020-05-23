@@ -4,6 +4,9 @@ export default {
   async index(req: Request, res: Response) {
     throw new Error("Method not implemented.");
   },
+  async show(req: Request, res: Response) {
+    throw new Error("Method not implemented.");
+  },
   async create(req: Request, res: Response) {
     throw new Error("Method not implemented.");
   },
