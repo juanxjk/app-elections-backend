@@ -3,7 +3,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ObjectID,
   DeleteDateColumn,
   UpdateDateColumn,
   CreateDateColumn,
