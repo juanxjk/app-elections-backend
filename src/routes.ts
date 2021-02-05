@@ -9,6 +9,9 @@ import SessionController from "./controllers/SessionController";
 const routes = Router();
 
 // PUBLIC
+routes.get("/", (req, res) => {
+  res.send({ message: "It works! 🎉" });
+});
 routes.get("/login", SessionController.login);
 routes.post("/logout", SessionController.logout);
 
