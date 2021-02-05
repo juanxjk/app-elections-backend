@@ -3,6 +3,10 @@
   "version": "0.1.0+alpha",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly src/index.ts",
