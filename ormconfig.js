@@ -11,7 +11,7 @@ module.exports = {
   username: process.env.DB_USER || "root",
   password: process.env.DB_PASS || "root",
   database: process.env.DB_DATABASE || "appelections",
-  synchronize: false,
+  synchronize: process.env.NODE_ENV == "development" ? true : false,
   logging: false,
   migrations: ["./database/migrations/*.js"],
   entities: ["./src/models/*.ts"],
