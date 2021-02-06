@@ -48,7 +48,7 @@ export default {
 
       const createdElection = await repository.create(election);
 
-      return res.json({ success: true, data: createdElection });
+      return res.status(201).json({ success: true, data: createdElection });
     } catch (err) {
       console.error(err);
       return res

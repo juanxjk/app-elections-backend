@@ -56,7 +56,7 @@ export default {
 
       const createdElectionPoll = await repository.create(electionPoll);
 
-      return res.json({ success: true, data: createdElectionPoll });
+      return res.status(201).json({ success: true, data: createdElectionPoll });
     } catch (err) {
       console.error(err);
       return res

@@ -66,7 +66,7 @@ export default {
 
       const createdSurvey = await repository.create(survey);
 
-      return res.json({ success: true, data: createdSurvey });
+      return res.status(201).json({ success: true, data: createdSurvey });
     } catch (err) {
       console.error(err);
       return res

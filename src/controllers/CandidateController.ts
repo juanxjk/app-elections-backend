@@ -53,7 +53,7 @@ export default {
 
       const createdCandidate = await repository.create(candidate);
 
-      return res.json({ success: true, data: createdCandidate });
+      return res.status(201).json({ success: true, data: createdCandidate });
     } catch (err) {
       console.error(err);
       return res

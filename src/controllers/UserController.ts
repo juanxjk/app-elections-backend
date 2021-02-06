@@ -48,7 +48,7 @@ export default {
 
       const createdUser = await repository.create(user);
 
-      return res.json({ success: true, data: createdUser });
+      return res.status(201).json({ success: true, data: createdUser });
     } catch (err) {
       console.error(err);
       return res
