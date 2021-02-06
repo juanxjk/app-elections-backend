@@ -44,6 +44,9 @@ export default class User {
   @Column({ nullable: false, default: false })
   public isVerified!: boolean;
 
+  @Column({ nullable: false, default: false })
+  public isBanned!: boolean;
+
   @Column({
     type: "enum",
     enum: UserRole,
