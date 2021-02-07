@@ -3,13 +3,17 @@ import { getConnection } from "../libs/database/typeorm";
 import { DeepPartial } from "typeorm";
 import NotFoundError from "../errors/NotFoundError";
 
+type FindManyOptions<T> = {
+  page?: number;
+  size?: number;
+};
 export interface Repository<T> {
   findByID(
     id: string | number,
     options?: typeorm.FindOneOptions<T>
   ): Promise<T>;
 
-  findAll(options?: typeorm.FindManyOptions<T>): Promise<T[]>;
+  findAll(options?: FindManyOptions<T>): Promise<T[]>;
 
   findOne(query: T, options?: typeorm.FindOneOptions): Promise<T>;
 
@@ -41,9 +45,21 @@ export default class GenericRepository<T> implements Repository<T> {
     return foundData;
   }
 
-  async findAll(options?: typeorm.FindManyOptions<T>): Promise<T[]> {
+  async findAll(options?: FindManyOptions<T>): Promise<T[]> {
+    const page = options?.page ?? 1;
+    const size = options?.size ?? 25;
+    if (page < 0) throw new Error("'page' param must be greater than 0");
+    if (size < 0) throw new Error("'size' param must be greater than 0");
+    if (size > 25) throw new Error("'size' param can not be greater than 25");
+
+    let skip = (page - 1) * size;
+    let take = size;
+
     const repository = await this.repository;
-    return await repository.find(options);
+    return await repository.find({
+      skip,
+      take
+    });
   }
 
   async findOne(

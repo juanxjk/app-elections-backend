@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import CandidateRepository from "../repositories/CandidateRepository";
-import { getPagination } from "./utils/queryFilters";
 import Candidate from "../models/Candidate";
 
 const repository = new CandidateRepository();
@@ -11,11 +10,9 @@ export default {
       const { page, size, deleted } = req.query;
       const { relations } = req.query;
 
-      const { skip, take } = getPagination(+page, +size);
-
       const candidates = await repository.findAll({
-        skip,
-        take,
+        page: +page,
+        size: +size,
         withDeleted: deleted === "true" ? true : false,
         relations: relations === "true" ? ["election"] : undefined,
         loadRelationIds: relations !== "true" ? true : false,

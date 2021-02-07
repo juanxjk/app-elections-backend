@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import ElectionPollRepository from "../repositories/ElectionPollRepository";
-import { getPagination } from "./utils/queryFilters";
 import ElectionPoll from "../models/ElectionPoll";
 
 const repository = new ElectionPollRepository();
@@ -11,11 +10,9 @@ export default {
       const { page, size, deleted } = req.query;
       const { relations } = req.query;
 
-      const { skip, take } = getPagination(+page, +size);
-
       const electionPolls = await repository.findAll({
-        skip,
-        take,
+        page: +page,
+        size: +size,
         withDeleted: deleted === "true" ? true : false,
         relations:
           relations === "true"
