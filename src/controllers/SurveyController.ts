@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import SurveyRepository from "../repositories/SurveyRepository";
-import { getPagination } from "./utils/queryFilters";
 import Survey from "../models/Survey";
 
 const repository = new SurveyRepository();
@@ -11,11 +10,9 @@ export default {
       const { page, size, deleted } = req.query;
       const { relations } = req.query;
 
-      const { skip, take } = getPagination(+page, +size);
-
       const surveys = await repository.findAll({
-        skip,
-        take,
+        page: +page,
+        size: +size,
         withDeleted: deleted === "true" ? true : false,
         relations:
           relations === "true"
@@ -26,7 +23,7 @@ export default {
                 "notFavoritedCandidate",
               ]
             : undefined,
-        loadRelationIds: relations !== "true" ? true : false,
+        withRelations: relations !== "true" ? true : false,
       });
 
       return res.json({ success: true, data: surveys });

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import UserRepository from "../repositories/UserRepository";
-import { getPagination } from "./utils/queryFilters";
 
 const repository = new UserRepository();
 
@@ -10,11 +9,9 @@ export default {
     try {
       const { page, size, deleted } = req.query;
 
-      const { skip, take } = getPagination(+page, +size);
-
       const users = await repository.findAll({
-        skip,
-        take,
+        page: +page,
+        size: +size,
         withDeleted: deleted === "true" ? true : false,
       });
 
