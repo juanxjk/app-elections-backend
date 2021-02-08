@@ -14,8 +14,8 @@ export default {
         page: +page,
         size: +size,
         withDeleted: deleted === "true" ? true : false,
-        relations: relations === "true" ? ["election"] : undefined,
-        loadRelationIds: relations !== "true" ? true : false,
+        relations: ["election"],
+        withRelations: relations === "true" ? true : false,
       });
 
       return res.json({ success: true, data: candidates });

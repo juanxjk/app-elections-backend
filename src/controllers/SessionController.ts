@@ -11,10 +11,7 @@ export default {
     try {
       const { username, password } = req.body;
 
-      const user = await userRepository.findOne(
-        { username },
-        { select: ["id", "passwordHash"] }
-      );
+      const user = await userRepository.findOne({ username });
 
       if (!user) return res.status(404).json({ error: "User not found" });
 

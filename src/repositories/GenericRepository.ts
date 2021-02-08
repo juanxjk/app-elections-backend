@@ -3,19 +3,22 @@ import { getConnection } from "../libs/database/typeorm";
 import { DeepPartial } from "typeorm";
 import NotFoundError from "../errors/NotFoundError";
 
-type FindManyOptions<T> = {
+type FindOneOptions<T> = {
+  withDeleted?: boolean;
+  select?: (keyof T)[];
+  relations?: string[];
+  withRelations?: boolean;
+};
+type FindManyOptions<T> = FindOneOptions<T> & {
   page?: number;
   size?: number;
 };
 export interface Repository<T> {
-  findByID(
-    id: string | number,
-    options?: typeorm.FindOneOptions<T>
-  ): Promise<T>;
+  findByID(id: string | number, options?: FindOneOptions<T>): Promise<T>;
 
   findAll(options?: FindManyOptions<T>): Promise<T[]>;
 
-  findOne(query: T, options?: typeorm.FindOneOptions): Promise<T>;
+  findOne(query: T, options?: FindOneOptions<T>): Promise<T>;
 
   create(data: T): Promise<T>;
 
@@ -35,12 +38,19 @@ export default class GenericRepository<T> implements Repository<T> {
 
   constructor(private type: { new (): T }) {}
 
-  async findByID(
-    id: string | number,
-    options?: typeorm.FindOneOptions<T> | undefined
-  ): Promise<T> {
+  async findByID(id: string | number, options?: FindOneOptions<T>): Promise<T> {
+    const withDeleted = options?.withDeleted ?? false;
+    const select = options?.select;
+    const relations = options?.relations;
+    const withRelations = options?.withRelations ?? false;
+
     const repository = await this.repository;
-    const foundData = await repository.findOne(id, options);
+    const foundData = await repository.findOne(id, {
+      withDeleted,
+      select,
+      relations,
+      loadRelationIds: withRelations,
+    });
     if (!foundData) throw new NotFoundError();
     return foundData;
   }
@@ -48,6 +58,11 @@ export default class GenericRepository<T> implements Repository<T> {
   async findAll(options?: FindManyOptions<T>): Promise<T[]> {
     const page = options?.page ?? 1;
     const size = options?.size ?? 25;
+    const withDeleted = options?.withDeleted ?? false;
+    const select = options?.select;
+    const relations = options?.relations;
+    const withRelations = options?.withRelations ?? false;
+
     if (page < 0) throw new Error("'page' param must be greater than 0");
     if (size < 0) throw new Error("'size' param must be greater than 0");
     if (size > 25) throw new Error("'size' param can not be greater than 25");
@@ -58,16 +73,30 @@ export default class GenericRepository<T> implements Repository<T> {
     const repository = await this.repository;
     return await repository.find({
       skip,
-      take
+      take,
+      withDeleted,
+      select,
+      relations,
+      loadRelationIds: withRelations,
     });
   }
 
   async findOne(
     query: typeorm.FindConditions<T>,
-    options?: typeorm.FindOneOptions | undefined
+    options?: FindOneOptions<T>
   ): Promise<T> {
+    const withDeleted = options?.withDeleted ?? false;
+    const select = options?.select;
+    const relations = options?.relations;
+    const withRelations = options?.withRelations ?? false;
+
     const repository = await this.repository;
-    const foundData = await repository.findOne(query, options);
+    const foundData = await repository.findOne(query, {
+      withDeleted,
+      select,
+      relations,
+      loadRelationIds: withRelations,
+    });
     if (!foundData) throw new NotFoundError();
     return foundData;
   }

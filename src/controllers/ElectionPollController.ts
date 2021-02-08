@@ -18,7 +18,7 @@ export default {
           relations === "true"
             ? ["createdBy", "election", "surveys"]
             : undefined,
-        loadRelationIds: relations !== "true" ? true : false,
+        withRelations: relations !== "true" ? true : false,
       });
 
       return res.json({ success: true, data: electionPolls });
