@@ -1,7 +1,8 @@
 import * as typeorm from "typeorm";
-import { getConnection } from "../libs/database/typeorm";
 import { DeepPartial } from "typeorm";
 import NotFoundError from "../errors/NotFoundError";
+
+import app from "../App";
 
 type FindOneOptions<T> = {
   withDeleted?: boolean;
@@ -28,14 +29,12 @@ export interface Repository<T> {
 }
 
 export default class GenericRepository<T> implements Repository<T> {
-  protected get repository(): Promise<typeorm.Repository<T>> {
-    return (async () => {
-      const con = await getConnection();
-      const repository = con.getRepository(this.type);
-      return repository;
-    })();
+  protected get repository() {
+    if (app.dbConnection) return app.dbConnection.getRepository(this.type);
+    else {
+      throw new Error("Database not connected.");
+    }
   }
-
   constructor(private type: { new (): T }) {}
 
   async findByID(id: string | number, options?: FindOneOptions<T>): Promise<T> {
@@ -44,8 +43,7 @@ export default class GenericRepository<T> implements Repository<T> {
     const relations = options?.relations;
     const withRelations = options?.withRelations ?? false;
 
-    const repository = await this.repository;
-    const foundData = await repository.findOne(id, {
+    const foundData = await this.repository.findOne(id, {
       withDeleted,
       select,
       relations,
@@ -70,8 +68,7 @@ export default class GenericRepository<T> implements Repository<T> {
     let skip = (page - 1) * size;
     let take = size;
 
-    const repository = await this.repository;
-    return await repository.find({
+    return this.repository.find({
       skip,
       take,
       withDeleted,
@@ -90,8 +87,7 @@ export default class GenericRepository<T> implements Repository<T> {
     const relations = options?.relations;
     const withRelations = options?.withRelations ?? false;
 
-    const repository = await this.repository;
-    const foundData = await repository.findOne(query, {
+    const foundData = await this.repository.findOne(query, {
       withDeleted,
       select,
       relations,
@@ -102,27 +98,24 @@ export default class GenericRepository<T> implements Repository<T> {
   }
 
   async create(data: T): Promise<T> {
-    const repository = await this.repository;
-    return await repository.save(data);
+    return this.repository.save(data);
   }
 
   async update(id: string | number, data: DeepPartial<T>): Promise<T> {
-    const repository = await this.repository;
-    const originalData = await repository.findOne(id);
+    const originalData = await this.repository.findOne(id);
     if (!originalData) {
       throw new NotFoundError();
     }
     const updateData = { ...originalData, ...data };
-    const updatedData = repository.save(updateData);
+    const updatedData = this.repository.save(updateData);
 
     return updatedData;
   }
 
   async delete(id: string | number): Promise<boolean> {
-    const repository = await this.repository;
-    const foundData = await repository.findOne(id);
+    const foundData = await this.repository.findOne(id);
     if (!foundData) throw new NotFoundError();
-    const result = await repository.softDelete(id);
+    const result = await this.repository.softDelete(id);
     console.log(result);
 
     if (result.affected) return true;
