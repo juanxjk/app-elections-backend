@@ -33,7 +33,7 @@ export default class ElectionPoll {
   @Column({ nullable: false })
   public startDate!: Date;
 
-  @Column()
+  @Column({ nullable: true })
   public endDate?: Date;
 
   @ManyToOne((type) => Election, (election) => election.electionPolls, {
