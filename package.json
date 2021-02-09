@@ -1,6 +1,6 @@
 {
   "name": "app-elections-backend",
-  "version": "0.1.0+alpha",
+  "version": "0.1.0",
   "main": "index.js",
   "license": "MIT",
   "engines": {
