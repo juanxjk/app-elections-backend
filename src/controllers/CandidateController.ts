@@ -7,7 +7,9 @@ const repository = new CandidateRepository();
 export default {
   async index(req: Request, res: Response) {
     try {
-      const { page, size, deleted } = req.query;
+      const { page, size, deleted } = req.query as {
+        [key: string]: string;
+      };
       const { relations } = req.query;
 
       const candidates = await repository.findAll({
