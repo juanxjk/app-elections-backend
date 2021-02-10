@@ -39,6 +39,7 @@ class App {
         console.log("Server running on port:", config.port)
       );
     } catch (err) {
+      console.error("App: http server error.");
       if (isDevMode) console.error(err);
     }
   }
@@ -58,10 +59,8 @@ class App {
           );
       }
     } catch (error) {
-      if (isDevMode) {
-        console.error("Database connection error!");
-        console.log(error);
-      }
+      console.error("App: database connection error.");
+      if (isDevMode) console.log(error);
     }
   }
 
