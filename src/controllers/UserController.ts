@@ -7,7 +7,9 @@ const repository = new UserRepository();
 export default {
   async index(req: Request, res: Response) {
     try {
-      const { page, size, deleted } = req.query;
+      const { page, size, deleted } = req.query as {
+        [key: string]: string;
+      };
 
       const users = await repository.findAll({
         page: +page,
