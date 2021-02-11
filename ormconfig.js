@@ -6,7 +6,7 @@ dotenv.config({ path: ".env" });
 module.exports = {
   type: "postgres",
   url: process.env.DB_URL,
-  host: "localhost",
+  host: process.env.DB_HOST | "localhost",
   port: 5432,
   username: process.env.DB_USER || "root",
   password: process.env.DB_PASS || "root",
