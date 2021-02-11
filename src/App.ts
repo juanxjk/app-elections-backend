@@ -11,7 +11,7 @@ import routes from "./routes";
 const isDevMode = process.env.NODE_ENV === "development";
 
 class App {
-  public expressApp?: Express;
+  public expressApp: Express = express();
   public expressServer?: Server;
   public dbConnection?: typeorm.Connection;
 
@@ -34,7 +34,6 @@ class App {
 
   async startHttpServer() {
     try {
-      this.expressApp = this.expressApp = express();
       this.expressServer = this.expressApp.listen(config.port, () =>
         console.log("Server running on port:", config.port)
       );
