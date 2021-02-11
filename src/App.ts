@@ -34,9 +34,10 @@ class App {
 
   async startHttpServer() {
     try {
-      this.expressServer = this.expressApp.listen(config.port, () =>
-        console.log("Server running on port:", config.port)
-      );
+      if (!this.expressServer || !this.expressServer.listening)
+        this.expressServer = this.expressApp.listen(config.port, () =>
+          console.log("Server running on port:", config.port)
+        );
     } catch (err) {
       console.error("App: http server error.");
       if (isDevMode) console.error(err);
