@@ -5,6 +5,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 import config from "./config";
+import dbConfig from "./config/ormconfig";
 
 import routes from "./routes";
 
@@ -47,7 +48,7 @@ class App {
   async startDatabase() {
     try {
       if (!this.dbConnection) {
-        this.dbConnection = await typeorm.createConnection();
+        this.dbConnection = await typeorm.createConnection(dbConfig);
         if (isDevMode) console.log("Database is connected.");
 
         if (isDevMode)

@@ -1,12 +1,10 @@
-const dotenv = require("dotenv");
+import "./";
+import { ConnectionOptions } from "typeorm";
 
-dotenv.config({ path: ".env" });
-
-/** @type {import('typeorm').ConnectionOptions} */
-module.exports = {
+const config: ConnectionOptions = {
   type: "postgres",
   url: process.env.DB_URL,
-  host: process.env.DB_HOST | "localhost",
+  host: process.env.DB_HOST || "localhost",
   port: 5432,
   username: process.env.DB_USER || "root",
   password: process.env.DB_PASS || "root",
@@ -21,3 +19,5 @@ module.exports = {
     subscribersDir: "subscriber",
   },
 };
+
+export default config;
