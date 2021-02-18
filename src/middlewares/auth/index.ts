@@ -37,7 +37,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     userID = (<any>decoded).id;
     const user: User = await new UserRepository().findByID(userID);
     if (!user) {
-      return res.status(401).send({ error: "Usuário inválido" });
+      return res.status(401).send({ error: "Invalid user" });
     }
     return next();
   });
