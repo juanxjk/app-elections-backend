@@ -5,13 +5,14 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 import config from "./config";
+import dbConfig from "./config/ormconfig";
 
 import routes from "./routes";
 
 const isDevMode = process.env.NODE_ENV === "development";
 
 class App {
-  public expressApp?: Express;
+  public expressApp: Express = express();
   public expressServer?: Server;
   public dbConnection?: typeorm.Connection;
 
@@ -34,11 +35,12 @@ class App {
 
   async startHttpServer() {
     try {
-      this.expressApp = this.expressApp = express();
-      this.expressServer = this.expressApp.listen(config.port, () =>
-        console.log("Server running on port:", config.port)
-      );
+      if (!this.expressServer || !this.expressServer.listening)
+        this.expressServer = this.expressApp.listen(config.port, () =>
+          console.log("Server running on port:", config.port)
+        );
     } catch (err) {
+      console.error("App: http server error.");
       if (isDevMode) console.error(err);
     }
   }
@@ -46,7 +48,7 @@ class App {
   async startDatabase() {
     try {
       if (!this.dbConnection) {
-        this.dbConnection = await typeorm.createConnection();
+        this.dbConnection = await typeorm.createConnection(dbConfig);
         if (isDevMode) console.log("Database is connected.");
 
         if (isDevMode)
@@ -58,10 +60,8 @@ class App {
           );
       }
     } catch (error) {
-      if (isDevMode) {
-        console.error("Database connection error!");
-        console.log(error);
-      }
+      console.error("App: database connection error.");
+      if (isDevMode) console.log(error);
     }
   }
 

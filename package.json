@@ -1,6 +1,6 @@
 {
   "name": "app-elections-backend",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "license": "MIT",
   "engines": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --inspect --respawn --transpileOnly src/index.ts",
+    "dev": "NODE_ENV=development ts-node-dev --inspect --respawn --transpile-only src/index.ts",
     "start": "ts-node src/index.ts",
     "test": "NODE_ENV=test jest"
   },
@@ -40,7 +40,6 @@
     "jsonwebtoken": "^8.0.0",
     "pg": "^8.0.0",
     "reflect-metadata": "^0.1.0",
-    "sqlite3": "^5.0.0",
     "typeorm": "^0.2.0"
   }
 }
