@@ -4,6 +4,11 @@
 
 ❗️**WARNING!** This project is in ALPHA stage, some _BREAKING CHANGE_ may appear.
 
+## ❤️ Support this project!
+
+Your contribution can keep this project
+alive.
+
 # Setup
 
 ## Requirements
